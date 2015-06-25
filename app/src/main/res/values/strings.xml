@@ -7,6 +7,9 @@
     <string name="score_points">0 </string>
     <string name="turn_score">Turn score:  </string>
     <string name="turn_score_points">0 </string>
+    <string name="save_button">Save</string>
+    <string name="score_button">Score </string>
+    <string name="throw_button">Throw </string>
 
 
 </resources>
