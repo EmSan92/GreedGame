@@ -7,11 +7,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
+
 
 
 public class MainActivity extends ActionBarActivity {
@@ -19,15 +21,19 @@ public class MainActivity extends ActionBarActivity {
     private HashMap<Integer,ImageButton> dices;
 
 
-    private ImageButton dice1;
-    private ImageButton dice2;
-    private ImageButton dice3;
-    private ImageButton dice4;
-    private ImageButton dice5;
-    private ImageButton dice6;
+    private ImageView dice1;
+    private ImageView dice2;
+    private ImageView dice3;
+    private ImageView dice4;
+    private ImageView dice5;
+    private ImageView dice6;
+
+    private TextView this_round;
+    private TextView turn_score_points;
+    private TextView score_points;
 
     private Button throwButton;
-    private Button scoreButton;
+
     private Button saveButton;
 
     private ArrayList<Integer> list;
@@ -36,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
     private Greed greed;
     private ScoreCounter scores;
     private Update update;
-
+    private int scoreCounter;
 
 
     @Override
@@ -44,42 +50,62 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        scoreCounter = 0;
         dice = new Dice();
         greed = new Greed(dice);
         scores = new ScoreCounter(greed);
         update = new Update(greed);
 
-        dice1 = (ImageButton)findViewById(R.id.dice1);
-        dice2 = (ImageButton)findViewById(R.id.dice2);
-        dice3 = (ImageButton)findViewById(R.id.dice3);
-        dice4 = (ImageButton)findViewById(R.id.dice4);
-        dice5 = (ImageButton)findViewById(R.id.dice5);
-        dice6 = (ImageButton)findViewById(R.id.dice6);
+        dice1 = (ImageView)findViewById(R.id.dice1);
+        dice2 = (ImageView)findViewById(R.id.dice2);
+        dice3 = (ImageView)findViewById(R.id.dice3);
+        dice4 = (ImageView)findViewById(R.id.dice4);
+        dice5 = (ImageView)findViewById(R.id.dice5);
+        dice6 = (ImageView)findViewById(R.id.dice6);
 
+        turn_score_points = (TextView)findViewById(R.id.turnscorepoints);
+        this_round = (TextView)findViewById(R.id.scorepointsofthisround);
+        score_points =(TextView)findViewById(R.id.scorepoints);
 
 
         throwButton = (Button)findViewById(R.id.throwButton);
         throwButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "ThrowButton Clicked", Toast.LENGTH_SHORT).show();
 
 
                 dice1.setImageResource(greed.getImageResource(1));
+                greed.updateScore();
                 dice2.setImageResource(greed.getImageResource(2));
+                greed.updateScore();
                 dice3.setImageResource(greed.getImageResource(3));
+                greed.updateScore();
                 dice4.setImageResource(greed.getImageResource(4));
+                greed.updateScore();
                 dice5.setImageResource(greed.getImageResource(5));
+                greed.updateScore();
                 dice6.setImageResource(greed.getImageResource(6));
+                greed.updateScore();
 
+                turn_score_points.setText(String.valueOf(greed.getScore()));
+                scoreCounter = scoreCounter + greed.getScore();
+                this_round.setText(String.valueOf(scoreCounter));
                 }
 
         });
 
 
-        scoreButton = (Button)findViewById(R.id.scoreButton);
+
         saveButton = (Button)findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "SaveButton Clicked", Toast.LENGTH_SHORT).show();
+                score_points.setText(String.valueOf(scoreCounter));
+                scoreCounter = 0;
+            }
+        });
 
 
 

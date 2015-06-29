@@ -10,6 +10,8 @@
     <string name="save_button">Save</string>
     <string name="score_button">Score </string>
     <string name="throw_button">Throw </string>
+    <string name="this_round">0 </string>
+
 
 
 </resources>
