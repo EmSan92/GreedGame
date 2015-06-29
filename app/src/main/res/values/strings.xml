@@ -11,6 +11,10 @@
     <string name="score_button">Score </string>
     <string name="throw_button">Throw </string>
     <string name="this_round">0 </string>
+    <string name="title_activity_winning">WinningActivity</string>
+    <string name="totalscore_points">0 points</string>
+    <string name="tryagain">Try Again!</string>
+
 
 
 

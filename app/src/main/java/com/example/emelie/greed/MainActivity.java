@@ -1,5 +1,6 @@
 package com.example.emelie.greed;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,8 +42,10 @@ public class MainActivity extends ActionBarActivity {
     private Dice dice;
     private Greed greed;
     private ScoreCounter scores;
-    private Update update;
+
     private int scoreCounter;
+    private int round;
+    private int totalScore;
 
 
     @Override
@@ -51,10 +54,12 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         scoreCounter = 0;
+        round = 0;
+        totalScore = 0;
         dice = new Dice();
         greed = new Greed(dice);
         scores = new ScoreCounter(greed);
-        update = new Update(greed);
+
 
         dice1 = (ImageView)findViewById(R.id.dice1);
         dice2 = (ImageView)findViewById(R.id.dice2);
@@ -88,9 +93,16 @@ public class MainActivity extends ActionBarActivity {
                 dice6.setImageResource(greed.getImageResource(6));
                 greed.updateScore();
 
-                turn_score_points.setText(String.valueOf(greed.getScore()));
-                scoreCounter = scoreCounter + greed.getScore();
+                int x = greed.getScore();
+                turn_score_points.setText(String.valueOf(x));
+                if(x == 0){
+                    scoreCounter = 0;
+                    round ++;
+
+                }
+                scoreCounter = scoreCounter + x;
                 this_round.setText(String.valueOf(scoreCounter));
+                x = 0;
                 }
 
         });
@@ -102,7 +114,12 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "SaveButton Clicked", Toast.LENGTH_SHORT).show();
-                score_points.setText(String.valueOf(scoreCounter));
+                totalScore = totalScore + scoreCounter;
+                score_points.setText(String.valueOf(totalScore));
+                if(totalScore > 10000){
+                    Intent iinent= new Intent(MainActivity.this,WinningActivity.class);
+                    startActivity(iinent);
+                }
                 scoreCounter = 0;
             }
         });
@@ -110,7 +127,6 @@ public class MainActivity extends ActionBarActivity {
 
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
