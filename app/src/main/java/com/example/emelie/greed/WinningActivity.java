@@ -1,5 +1,6 @@
 package com.example.emelie.greed;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,24 +8,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class WinningActivity extends ActionBarActivity {
 
     private Button tryAgainButton;
 
+    private TextView totalscore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_winning);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String round = bundle.getString("Round");
+        String totalScore = bundle.getString("Totalscore");
 
+
+        totalscore =(TextView)findViewById(R.id.totalscore);
+        totalscore.setText(String.valueOf(totalScore) + " points after " + String.valueOf(round) + " rounds");
 
         tryAgainButton = (Button)findViewById(R.id.tryagainButton);
         tryAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i= new Intent(WinningActivity.this,MainActivity.class);
+
                 startActivity(i);
             }
         });

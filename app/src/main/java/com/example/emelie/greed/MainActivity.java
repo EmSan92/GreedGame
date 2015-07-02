@@ -97,7 +97,7 @@ public class MainActivity extends ActionBarActivity {
                 turn_score_points.setText(String.valueOf(x));
                 if(x == 0){
                     scoreCounter = 0;
-                    round ++;
+                    round = round +1;
 
                 }
                 scoreCounter = scoreCounter + x;
@@ -113,11 +113,19 @@ public class MainActivity extends ActionBarActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int temp = 0;
                 Toast.makeText(MainActivity.this, "SaveButton Clicked", Toast.LENGTH_SHORT).show();
+                if(temp != scoreCounter) {
+                    round = round + 1;
+                    temp = scoreCounter;
+                }
                 totalScore = totalScore + scoreCounter;
                 score_points.setText(String.valueOf(totalScore));
                 if(totalScore > 10000){
                     Intent iinent= new Intent(MainActivity.this,WinningActivity.class);
+                    iinent.putExtra("Round", String.valueOf(round));
+                    iinent.putExtra("Totalscore", String.valueOf(totalScore));
+                    round = 0;
                     startActivity(iinent);
                 }
                 scoreCounter = 0;
@@ -150,7 +158,12 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    public int getRound(){
+        return round;
+    }
+    public int getTotalScore(){
+        return totalScore;
+    }
 
 
 }
