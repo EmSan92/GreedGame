@@ -1,6 +1,7 @@
 package com.example.emelie.greed;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,15 +42,16 @@ public class MainActivity extends ActionBarActivity {
 
     private Dice dice;
     private Greed greed;
-    private ScoreCounter scores;
+
 
     private int scoreCounter;
     private int round;
     private int totalScore;
-
+    private boolean isMarked1,isMarked2,isMarked3,isMarked4,isMarked5,isMarked6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -58,7 +60,12 @@ public class MainActivity extends ActionBarActivity {
         totalScore = 0;
         dice = new Dice();
         greed = new Greed(dice);
-        scores = new ScoreCounter(greed);
+        isMarked1 = false;
+        isMarked2 = false;
+        isMarked3 = false;
+        isMarked4 = false;
+        isMarked5 = false;
+        isMarked6 = false;
 
 
         dice1 = (ImageView)findViewById(R.id.dice1);
@@ -77,31 +84,64 @@ public class MainActivity extends ActionBarActivity {
         throwButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "ThrowButton Clicked", Toast.LENGTH_SHORT).show();
-
-
+                //Toast.makeText(MainActivity.this, "ThrowButton Clicked", Toast.LENGTH_SHORT).show();
+                saveButton.setEnabled(true);
+                if(!isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1){
+                    dice1.setAlpha(1f);
+                    dice2.setAlpha(1f);
+                    dice3.setAlpha(1f);
+                    dice4.setAlpha(1f);
+                    dice5.setAlpha(1f);
+                    dice6.setAlpha(1f);
+                }
+               /* Throw and update all imageviews(Dices) and update the score in the updateScore method */
+                if(!isMarked1){
                 dice1.setImageResource(greed.getImageResource(1));
-                greed.updateScore();
+                greed.updateScore();}
+                if(!isMarked2){
                 dice2.setImageResource(greed.getImageResource(2));
-                greed.updateScore();
+                greed.updateScore();}
+                if(!isMarked3){
                 dice3.setImageResource(greed.getImageResource(3));
-                greed.updateScore();
+                greed.updateScore();}
+                if(!isMarked4){
                 dice4.setImageResource(greed.getImageResource(4));
-                greed.updateScore();
+                greed.updateScore();}
+                if(!isMarked5){
                 dice5.setImageResource(greed.getImageResource(5));
-                greed.updateScore();
+                greed.updateScore();}
+                if(!isMarked6){
                 dice6.setImageResource(greed.getImageResource(6));
-                greed.updateScore();
+                greed.updateScore();}
 
                 int x = greed.getScore();
                 turn_score_points.setText(String.valueOf(x));
                 if(x == 0){
                     scoreCounter = 0;
                     round = round +1;
+                    isMarked1=false;
+                    isMarked2=false;
+                    isMarked3=false;
+                    isMarked4=false;
+                    isMarked5=false;
+                    isMarked6=false;
+                    dice1.setAlpha(0.5f);
+                    dice2.setAlpha(0.5f);
+                    dice3.setAlpha(0.5f);
+                    dice4.setAlpha(0.5f);
+                    dice5.setAlpha(0.5f);
+                    dice6.setAlpha(0.5f);
+                    saveButton.setEnabled(false);
 
                 }
+                if(x >0 && !isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1){
+                    scoreCounter = 0;
+                    round ++;
+                }
+
                 scoreCounter = scoreCounter + x;
                 this_round.setText(String.valueOf(scoreCounter));
+
                 x = 0;
                 }
 
@@ -114,8 +154,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 int temp = 0;
-                Toast.makeText(MainActivity.this, "SaveButton Clicked", Toast.LENGTH_SHORT).show();
-                if(temp != scoreCounter) {
+                saveButton.setEnabled(false);
+                //Toast.makeText(MainActivity.this, "SaveButton Clicked", Toast.LENGTH_SHORT).show();
+                if(temp != scoreCounter && scoreCounter!=0) {
                     round = round + 1;
                     temp = scoreCounter;
                 }
@@ -127,11 +168,67 @@ public class MainActivity extends ActionBarActivity {
                     iinent.putExtra("Totalscore", String.valueOf(totalScore));
                     round = 0;
                     startActivity(iinent);
+                    finish();
                 }
                 scoreCounter = 0;
+                isMarked1=false;
+                isMarked2=false;
+                isMarked3=false;
+                isMarked4=false;
+                isMarked5=false;
+                isMarked6=false;
+                dice1.setAlpha(0.5f);
+                dice2.setAlpha(0.5f);
+                dice3.setAlpha(0.5f);
+                dice4.setAlpha(0.5f);
+                dice5.setAlpha(0.5f);
+                dice6.setAlpha(0.5f);
             }
         });
 
+        /*When a imageview is pressed, it change the image to a gray dice and put the isMarked parameter to true */
+        dice1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMarked1 = true;
+                dice1.setAlpha(0.5f);
+            }
+        });
+        dice2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMarked2 = true;
+                dice2.setAlpha(0.5f);
+            }
+        });
+        dice3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMarked3 = true;
+                dice3.setAlpha(0.5f);
+            }
+        });
+        dice4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMarked4 = true;
+                dice4.setAlpha(0.5f);
+            }
+        });
+        dice5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMarked5 = true;
+                dice5.setAlpha(0.5f);
+            }
+        });
+        dice6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMarked6 = true;
+                dice6.setAlpha(0.5f);
+            }
+        });
 
 
     }
@@ -163,6 +260,10 @@ public class MainActivity extends ActionBarActivity {
     }
     public int getTotalScore(){
         return totalScore;
+    }
+
+    public void onBackPressed(){
+        finish();
     }
 
 

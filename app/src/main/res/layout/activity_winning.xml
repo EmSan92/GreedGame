@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:gravity="left"
     android:orientation="vertical"
+    android:paddingTop="20dp"
     android:background="@drawable/bluecolor">
 
     <TextView
@@ -24,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
+
             android:paddingLeft="10dp"
             android:text="You got"
             android:textStyle="bold"
@@ -44,6 +45,15 @@
 
         </LinearLayout>
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:paddingTop="30dp"
+    android:orientation="horizontal">
+
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,5 +61,6 @@
         android:gravity="center"
         android:text="@string/tryagain"
         android:id="@+id/tryagainButton" />
+</LinearLayout>
 
 </LinearLayout>
