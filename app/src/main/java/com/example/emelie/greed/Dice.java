@@ -15,7 +15,11 @@ public class Dice {
     currentValue = 0;
     }
 
-    /*Returns the value of the dice*/
+    /*
+    *Gives the dice its value
+    *
+    *@return the value of the dice
+    */
      public int throwDice(){
             Random rand = new Random();
             int k = 1 + rand.nextInt(6); //Randomly assigned a number between 1-6
@@ -23,7 +27,7 @@ public class Dice {
         return k;
     }
 
-   /*Returns the current value of the thrown dice*/
+   /*@Returns the current value of the thrown dice*/
     public int getCurrentValue(){
         return currentValue;
     }

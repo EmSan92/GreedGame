@@ -92,7 +92,10 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-        /*When a imageview is pressed, it change the image to a gray dice and put the isMarked parameter to true */
+        /*
+        *When an imageview is clicked on, the boolean is set to true and the imageview is set to be transparent.
+        * Click on a transparent imageview will set the boolean to false and the view to fully visiable.
+        */
         dice1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +179,6 @@ public class MainActivity extends ActionBarActivity {
 
                 /*Highlights the dices and the save button to indicate that they are clickable*/
                 saveButton.setEnabled(true);
-
                 if(!isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1){
                     dice1.setAlpha(1f);
                     dice2.setAlpha(1f);
@@ -235,18 +237,12 @@ public class MainActivity extends ActionBarActivity {
 
                 /*If no dices are marked and the score is not saved when clicking on the throw button,
                  *no points is saved and it counts as a round*/
-                Log.d("error", Integer.toString(scoreOfRound));
-                Log.d("error", String.valueOf(isMarked1));
-                Log.d("error", String.valueOf(isMarked2));
-                Log.d("error", String.valueOf(isMarked3));
-                Log.d("error", String.valueOf(isMarked4));
-                Log.d("error", String.valueOf(isMarked5));
-                Log.d("error", String.valueOf(isMarked6));
+
                 if(scoreOfRound > 0 && (!isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1)){
                     scoreCounter = 0;
                     round ++;
                     hasIncreasedRound = true;
-                    Log.d("increase", Integer.toString(round));
+
 
                 }
                 scoreCounter = scoreCounter + scoreOfRound;
@@ -271,9 +267,8 @@ public class MainActivity extends ActionBarActivity {
                 saveButton.setEnabled(false);
                 turn_score_points.setText(String.valueOf(0));
                 this_round.setText(String.valueOf(0));
-                //Toast.makeText(MainActivity.this, "Score saved", Toast.LENGTH_SHORT).show();
+
                 if(temp != scoreCounter && scoreCounter!=0) {
-                    //round = round + 1;
                     temp = scoreCounter;
                 }
                 totalScore = totalScore + scoreCounter;
