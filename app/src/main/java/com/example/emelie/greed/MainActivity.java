@@ -1,9 +1,12 @@
 package com.example.emelie.greed;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +37,8 @@ public class MainActivity extends ActionBarActivity {
     private TextView turn_score_points;
     private TextView score_points;
 
+
+
     private Button throwButton;
 
     private Button saveButton;
@@ -43,17 +48,20 @@ public class MainActivity extends ActionBarActivity {
     private Dice dice;
     private Greed greed;
 
-
+    private  boolean hasIncreasedRound;
     private int scoreCounter;
     private int round;
     private int totalScore;
     private boolean isMarked1,isMarked2,isMarked3,isMarked4,isMarked5,isMarked6;
+
+    public static ArrayList<Boolean> markedList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         scoreCounter = 0;
         round = 0;
@@ -66,6 +74,8 @@ public class MainActivity extends ActionBarActivity {
         isMarked4 = false;
         isMarked5 = false;
         isMarked6 = false;
+        hasIncreasedRound = false;
+
 
 
         dice1 = (ImageView)findViewById(R.id.dice1);
@@ -80,12 +90,93 @@ public class MainActivity extends ActionBarActivity {
         score_points =(TextView)findViewById(R.id.scorepoints);
 
 
+
+
+        /*When a imageview is pressed, it change the image to a gray dice and put the isMarked parameter to true */
+        dice1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isMarked1){
+                    dice1.setAlpha(1f);
+                    isMarked1 = false;
+                }
+                else{isMarked1 = true;
+                dice1.setAlpha(0.5f);}
+
+            }
+        });
+        dice2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isMarked2){
+                    dice2.setAlpha(1f);
+                    isMarked2 = false;
+
+                }else {
+                    isMarked2 = true;
+                    dice2.setAlpha(0.5f);
+                }
+            }
+        });
+        dice3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isMarked3){
+                    dice3.setAlpha(1f);
+                    isMarked3 = false;
+                }else {
+                    isMarked3 = true;
+                    dice3.setAlpha(0.5f);
+                }
+            }
+        });
+        dice4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isMarked4){
+                    dice4.setAlpha(1f);
+                    isMarked4 = false;
+                }else {
+                    isMarked4 = true;
+                    dice4.setAlpha(0.5f);
+                }
+            }
+        });
+        dice5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isMarked5){
+                    dice5.setAlpha(1f);
+                    isMarked5 = false;
+                }else {
+                    isMarked5 = true;
+                    dice5.setAlpha(0.5f);
+                }
+            }
+        });
+        dice6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isMarked6){
+                    dice6.setAlpha(1f);
+                    isMarked6 = false;
+                }else {
+                    isMarked6 = true;
+                    dice6.setAlpha(0.5f);
+                }
+            }
+        });
+
+
+
         throwButton = (Button)findViewById(R.id.throwButton);
         throwButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(MainActivity.this, "ThrowButton Clicked", Toast.LENGTH_SHORT).show();
+
+                /*Highlights the dices and the save button to indicate that they are clickable*/
                 saveButton.setEnabled(true);
+
                 if(!isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1){
                     dice1.setAlpha(1f);
                     dice2.setAlpha(1f);
@@ -114,11 +205,18 @@ public class MainActivity extends ActionBarActivity {
                 dice6.setImageResource(greed.getImageResource(6));
                 greed.updateScore();}
 
-                int x = greed.getScore();
-                turn_score_points.setText(String.valueOf(x));
-                if(x == 0){
+                int scoreOfRound = greed.getScore();
+
+                turn_score_points.setText(String.valueOf(scoreOfRound));
+
+                /*Makes the save button and the dices transparent and unclickable*/
+                if(scoreOfRound == 0 &&( !isMarked6 || !isMarked5 || !isMarked4 || !isMarked3 || !isMarked2 || !isMarked1)){
                     scoreCounter = 0;
-                    round = round +1;
+                    if(!hasIncreasedRound){
+                        round = round + 1;
+                        hasIncreasedRound = false;
+                    }
+
                     isMarked1=false;
                     isMarked2=false;
                     isMarked3=false;
@@ -134,15 +232,31 @@ public class MainActivity extends ActionBarActivity {
                     saveButton.setEnabled(false);
 
                 }
-                if(x >0 && !isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1){
+
+                /*If no dices are marked and the score is not saved when clicking on the throw button,
+                 *no points is saved and it counts as a round*/
+                Log.d("error", Integer.toString(scoreOfRound));
+                Log.d("error", String.valueOf(isMarked1));
+                Log.d("error", String.valueOf(isMarked2));
+                Log.d("error", String.valueOf(isMarked3));
+                Log.d("error", String.valueOf(isMarked4));
+                Log.d("error", String.valueOf(isMarked5));
+                Log.d("error", String.valueOf(isMarked6));
+                if(scoreOfRound > 0 && (!isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1)){
                     scoreCounter = 0;
                     round ++;
-                }
+                    hasIncreasedRound = true;
+                    Log.d("increase", Integer.toString(round));
 
-                scoreCounter = scoreCounter + x;
+                }
+                scoreCounter = scoreCounter + scoreOfRound;
+
                 this_round.setText(String.valueOf(scoreCounter));
 
-                x = 0;
+
+
+                scoreOfRound = 0;
+
                 }
 
         });
@@ -155,9 +269,11 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 int temp = 0;
                 saveButton.setEnabled(false);
-                //Toast.makeText(MainActivity.this, "SaveButton Clicked", Toast.LENGTH_SHORT).show();
+                turn_score_points.setText(String.valueOf(0));
+                this_round.setText(String.valueOf(0));
+                //Toast.makeText(MainActivity.this, "Score saved", Toast.LENGTH_SHORT).show();
                 if(temp != scoreCounter && scoreCounter!=0) {
-                    round = round + 1;
+                    //round = round + 1;
                     temp = scoreCounter;
                 }
                 totalScore = totalScore + scoreCounter;
@@ -186,81 +302,9 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        /*When a imageview is pressed, it change the image to a gray dice and put the isMarked parameter to true */
-        dice1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isMarked1 = true;
-                dice1.setAlpha(0.5f);
-            }
-        });
-        dice2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isMarked2 = true;
-                dice2.setAlpha(0.5f);
-            }
-        });
-        dice3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isMarked3 = true;
-                dice3.setAlpha(0.5f);
-            }
-        });
-        dice4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isMarked4 = true;
-                dice4.setAlpha(0.5f);
-            }
-        });
-        dice5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isMarked5 = true;
-                dice5.setAlpha(0.5f);
-            }
-        });
-        dice6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isMarked6 = true;
-                dice6.setAlpha(0.5f);
-            }
-        });
-
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public int getRound(){
-        return round;
-    }
-    public int getTotalScore(){
-        return totalScore;
-    }
 
     public void onBackPressed(){
         finish();
@@ -268,3 +312,5 @@ public class MainActivity extends ActionBarActivity {
 
 
 }
+
+

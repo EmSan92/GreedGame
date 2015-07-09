@@ -1,12 +1,15 @@
 package com.example.emelie.greed;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * Created by Emelie on 2015-06-09.
  *
- * This class takes care of all the logic in the game,
+ * This class takes care of most logic of the game,
  * and have all the update methods for the different fields
  * that needs to update during the game.
  */
@@ -16,14 +19,21 @@ public class Greed {
     private int dicevalue;
     private int one, two, three, four, five, six, points;
 
-    public Greed(Dice dice) {
+
+
+    public Greed(Dice dice)  {
         diceList = new ArrayList<Integer>();
         this.dice = dice;
         dicevalue = 0;
         points = 0;
+
     }
 
-    /*Returns the newly thrown dice image, and save the dicevalue in a list */
+    /*
+    *Update the imageviews and saves the dice values in a list
+    *
+    * @returns the newly thrown dice image
+    */
     public int getImageResource(int diceNumber) {
         diceList.add(0, 0);
         int updateIm = updateImage();
@@ -32,13 +42,13 @@ public class Greed {
         return updateIm;
     }
 
-    public int getImageResourceIfIsMarked(int diceNumber){ //ÄNDRAS!!!!
-        int oldValFromDice = diceList.get(diceNumber);
-        return updateImage();
 
-    }
 
-    /* Returns the right image of the newly thrown dice */
+    /*
+    *Connects the dice value to the correct image
+    *
+    *@return the right image of the newly thrown dice
+    */
     private int updateImage() {
         int valueFromDice = dice.throwDice();
         int temp = 0;
@@ -67,21 +77,22 @@ public class Greed {
 
     }
 
-    /* Returns a list that contains one or two three of a kind */
+    /* @return a list that contains one or two three of a kind */
     public ArrayList<Integer> threeOfAKind() {
         ArrayList<Integer> templist = new ArrayList<Integer>();
-        if (one >= 3) templist.add(1);
-        else if (two >= 3) templist.add(2);
-        else if (three >= 3) templist.add(3);
-        else if (four >= 3) templist.add(4);
-        else if (five >= 3) templist.add(5);
-        else if (six >= 3) templist.add(6);
+
+            if (one >= 3) templist.add(1);
+            if (two >= 3) templist.add(2);
+            if (three >= 3) templist.add(3);
+            if (four >= 3) templist.add(4);
+            if (five >= 3) templist.add(5);
+            if (six >= 3) templist.add(6);
 
         return templist;
     }
 
 
-    /* Returns a boolean that checks if there is a straight or not */
+    /* @return a boolean that checks if there is a straight or not */
     public boolean straight() {
         if (one == 1 && two == 1 && three == 1 && four == 1 && five == 1 && six == 1) {
             return true;
@@ -127,7 +138,10 @@ public class Greed {
     }
 
     /* Checks if the dices showing a straight, a three of a kind or/and if it exists any fives or ones,
-     * and allocate the right amount of points. Returns an integer with the point of the current throw.  */
+     * and allocate the right amount of points. Returns an integer with the point of the current throw.
+     *
+     * @return the total amount of pints of the throw
+     * */
     public int getScore() {
         points = 0;
         if (straight()) {
@@ -165,4 +179,12 @@ public class Greed {
 
         return points;
     }
+
+    /*
+    * @return list of dice values
+    * */
+    public ArrayList<Integer> getDiceList(){
+    return diceList;
+    }
+
 }

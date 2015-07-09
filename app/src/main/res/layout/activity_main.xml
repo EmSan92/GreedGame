@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:gravity="left"
     android:orientation="vertical"
-    android:background="@drawable/bluecolor">
+    android:background="@drawable/gradient">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -28,6 +28,7 @@
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:textSize="20sp"/>
+
 </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -146,17 +147,17 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:gravity="center"
         android:text="@string/save_button"
+        android:padding="24dp"
         android:enabled="false"
+
         android:id="@+id/saveButton"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp"
-        android:gravity="center"
+
         android:text="@string/throw_button"
         android:id="@+id/throwButton"/>
 </LinearLayout>
