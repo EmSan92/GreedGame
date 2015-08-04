@@ -1,20 +1,16 @@
-package com.example.emelie.greed;
+package se.umu.emsa0114.greed;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.emelie.greed.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,15 +19,15 @@ import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity {
 
-    private HashMap<Integer,ImageButton> dices;
+    private HashMap<Integer,ImageButton> dice;
 
 
-    private ImageView dice1;
-    private ImageView dice2;
-    private ImageView dice3;
-    private ImageView dice4;
-    private ImageView dice5;
-    private ImageView dice6;
+    private ImageView die1;
+    private ImageView die2;
+    private ImageView die3;
+    private ImageView die4;
+    private ImageView die5;
+    private ImageView die6;
 
     private TextView this_round;
     private TextView turn_score_points;
@@ -45,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
 
     private ArrayList<Integer> list;
 
-    private Dice dice;
+    private Die die;
     private Greed greed;
 
     private  boolean hasIncreasedRound;
@@ -66,8 +62,8 @@ public class MainActivity extends ActionBarActivity {
         scoreCounter = 0;
         round = 0;
         totalScore = 0;
-        dice = new Dice();
-        greed = new Greed(dice);
+        die = new Die();
+        greed = new Greed(die);
         isMarked1 = false;
         isMarked2 = false;
         isMarked3 = false;
@@ -78,12 +74,12 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-        dice1 = (ImageView)findViewById(R.id.dice1);
-        dice2 = (ImageView)findViewById(R.id.dice2);
-        dice3 = (ImageView)findViewById(R.id.dice3);
-        dice4 = (ImageView)findViewById(R.id.dice4);
-        dice5 = (ImageView)findViewById(R.id.dice5);
-        dice6 = (ImageView)findViewById(R.id.dice6);
+        die1 = (ImageView)findViewById(R.id.dice1);
+        die2 = (ImageView)findViewById(R.id.dice2);
+        die3 = (ImageView)findViewById(R.id.dice3);
+        die4 = (ImageView)findViewById(R.id.dice4);
+        die5 = (ImageView)findViewById(R.id.dice5);
+        die6 = (ImageView)findViewById(R.id.dice6);
 
         turn_score_points = (TextView)findViewById(R.id.turnscorepoints);
         this_round = (TextView)findViewById(R.id.scorepointsofthisround);
@@ -96,76 +92,77 @@ public class MainActivity extends ActionBarActivity {
         *When an imageview is clicked on, the boolean is set to true and the imageview is set to be transparent.
         * Click on a transparent imageview will set the boolean to false and the view to fully visiable.
         */
-        dice1.setOnClickListener(new View.OnClickListener() {
+        die1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isMarked1){
-                    dice1.setAlpha(1f);
+                if (isMarked1) {
+                    die1.setAlpha(1f);
                     isMarked1 = false;
+                } else {
+                    isMarked1 = true;
+                    die1.setAlpha(0.5f);
                 }
-                else{isMarked1 = true;
-                dice1.setAlpha(0.5f);}
 
             }
         });
-        dice2.setOnClickListener(new View.OnClickListener() {
+        die2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isMarked2){
-                    dice2.setAlpha(1f);
+                if (isMarked2) {
+                    die2.setAlpha(1f);
                     isMarked2 = false;
 
-                }else {
+                } else {
                     isMarked2 = true;
-                    dice2.setAlpha(0.5f);
+                    die2.setAlpha(0.5f);
                 }
             }
         });
-        dice3.setOnClickListener(new View.OnClickListener() {
+        die3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isMarked3){
-                    dice3.setAlpha(1f);
+                if (isMarked3) {
+                    die3.setAlpha(1f);
                     isMarked3 = false;
-                }else {
+                } else {
                     isMarked3 = true;
-                    dice3.setAlpha(0.5f);
+                    die3.setAlpha(0.5f);
                 }
             }
         });
-        dice4.setOnClickListener(new View.OnClickListener() {
+        die4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isMarked4){
-                    dice4.setAlpha(1f);
+                if (isMarked4) {
+                    die4.setAlpha(1f);
                     isMarked4 = false;
-                }else {
+                } else {
                     isMarked4 = true;
-                    dice4.setAlpha(0.5f);
+                    die4.setAlpha(0.5f);
                 }
             }
         });
-        dice5.setOnClickListener(new View.OnClickListener() {
+        die5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isMarked5){
-                    dice5.setAlpha(1f);
+                if (isMarked5) {
+                    die5.setAlpha(1f);
                     isMarked5 = false;
-                }else {
+                } else {
                     isMarked5 = true;
-                    dice5.setAlpha(0.5f);
+                    die5.setAlpha(0.5f);
                 }
             }
         });
-        dice6.setOnClickListener(new View.OnClickListener() {
+        die6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isMarked6){
-                    dice6.setAlpha(1f);
+                if (isMarked6) {
+                    die6.setAlpha(1f);
                     isMarked6 = false;
-                }else {
+                } else {
                     isMarked6 = true;
-                    dice6.setAlpha(0.5f);
+                    die6.setAlpha(0.5f);
                 }
             }
         });
@@ -180,31 +177,33 @@ public class MainActivity extends ActionBarActivity {
                 /*Highlights the dices and the save button to indicate that they are clickable*/
                 saveButton.setEnabled(true);
                 if(!isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1){
-                    dice1.setAlpha(1f);
-                    dice2.setAlpha(1f);
-                    dice3.setAlpha(1f);
-                    dice4.setAlpha(1f);
-                    dice5.setAlpha(1f);
-                    dice6.setAlpha(1f);
+                    die1.setAlpha(1f);
+                    die2.setAlpha(1f);
+                    die3.setAlpha(1f);
+                    die4.setAlpha(1f);
+                    die5.setAlpha(1f);
+                    die6.setAlpha(1f);
                 }
+
+                greed.clearScore();
                /* Throw and update all imageviews(Dices) and update the score in the updateScore method */
                 if(!isMarked1){
-                dice1.setImageResource(greed.getImageResource(1));
+                die1.setImageResource(greed.getImageResource(1));
                 greed.updateScore();}
                 if(!isMarked2){
-                dice2.setImageResource(greed.getImageResource(2));
+                die2.setImageResource(greed.getImageResource(2));
                 greed.updateScore();}
                 if(!isMarked3){
-                dice3.setImageResource(greed.getImageResource(3));
+                die3.setImageResource(greed.getImageResource(3));
                 greed.updateScore();}
                 if(!isMarked4){
-                dice4.setImageResource(greed.getImageResource(4));
+                die4.setImageResource(greed.getImageResource(4));
                 greed.updateScore();}
                 if(!isMarked5){
-                dice5.setImageResource(greed.getImageResource(5));
+                die5.setImageResource(greed.getImageResource(5));
                 greed.updateScore();}
                 if(!isMarked6){
-                dice6.setImageResource(greed.getImageResource(6));
+                die6.setImageResource(greed.getImageResource(6));
                 greed.updateScore();}
 
                 int scoreOfRound = greed.getScore();
@@ -225,12 +224,12 @@ public class MainActivity extends ActionBarActivity {
                     isMarked4=false;
                     isMarked5=false;
                     isMarked6=false;
-                    dice1.setAlpha(0.5f);
-                    dice2.setAlpha(0.5f);
-                    dice3.setAlpha(0.5f);
-                    dice4.setAlpha(0.5f);
-                    dice5.setAlpha(0.5f);
-                    dice6.setAlpha(0.5f);
+                    die1.setAlpha(0.5f);
+                    die2.setAlpha(0.5f);
+                    die3.setAlpha(0.5f);
+                    die4.setAlpha(0.5f);
+                    die5.setAlpha(0.5f);
+                    die6.setAlpha(0.5f);
                     saveButton.setEnabled(false);
 
                 }
@@ -288,12 +287,12 @@ public class MainActivity extends ActionBarActivity {
                 isMarked4=false;
                 isMarked5=false;
                 isMarked6=false;
-                dice1.setAlpha(0.5f);
-                dice2.setAlpha(0.5f);
-                dice3.setAlpha(0.5f);
-                dice4.setAlpha(0.5f);
-                dice5.setAlpha(0.5f);
-                dice6.setAlpha(0.5f);
+                die1.setAlpha(0.5f);
+                die2.setAlpha(0.5f);
+                die3.setAlpha(0.5f);
+                die4.setAlpha(0.5f);
+                die5.setAlpha(0.5f);
+                die6.setAlpha(0.5f);
             }
         });
 

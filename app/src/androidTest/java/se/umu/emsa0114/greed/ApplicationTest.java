@@ -1,4 +1,4 @@
-package com.example.emelie.greed;
+package se.umu.emsa0114.greed;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

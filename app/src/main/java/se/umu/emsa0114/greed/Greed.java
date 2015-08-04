@@ -1,9 +1,7 @@
-package com.example.emelie.greed;
+package se.umu.emsa0114.greed;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import com.example.emelie.greed.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -15,17 +13,19 @@ import java.util.ArrayList;
  */
 public class Greed {
     private ArrayList<Integer> diceList;
-    private Dice dice;
-    private int dicevalue;
-    private int one, two, three, four, five, six, points;
+    private Die die;
+    private int dieval;
+    private int[] dieValues;
+    private int points;
 
 
 
-    public Greed(Dice dice)  {
+    public Greed(Die die)  {
         diceList = new ArrayList<Integer>();
-        this.dice = dice;
-        dicevalue = 0;
+        this.die = die;
+        dieval = 0;
         points = 0;
+        dieValues = new int[6];
 
     }
 
@@ -34,11 +34,11 @@ public class Greed {
     *
     * @returns the newly thrown dice image
     */
-    public int getImageResource(int diceNumber) {
+    public int getImageResource(int dieNumber) {
         diceList.add(0, 0);
         int updateIm = updateImage();
-        dicevalue = dice.getCurrentValue();
-        diceList.add(diceNumber, dicevalue);
+        dieval = die.getCurrentValue();
+        diceList.add(dieNumber, dieval);
         return updateIm;
     }
 
@@ -50,9 +50,9 @@ public class Greed {
     *@return the right image of the newly thrown dice
     */
     private int updateImage() {
-        int valueFromDice = dice.throwDice();
+        int valueFromDie = die.throwDie();
         int temp = 0;
-        switch (valueFromDice) {
+        switch (valueFromDie) {
             case 1:
                 temp = R.drawable.white1;
                 break;
@@ -80,13 +80,9 @@ public class Greed {
     /* @return a list that contains one or two three of a kind */
     public ArrayList<Integer> threeOfAKind() {
         ArrayList<Integer> templist = new ArrayList<Integer>();
-
-            if (one >= 3) templist.add(1);
-            if (two >= 3) templist.add(2);
-            if (three >= 3) templist.add(3);
-            if (four >= 3) templist.add(4);
-            if (five >= 3) templist.add(5);
-            if (six >= 3) templist.add(6);
+            for(int k = 0; k<6; k++ ){
+                if (dieValues[k] >= 3) templist.add(k+1);
+            }
 
         return templist;
     }
@@ -94,47 +90,31 @@ public class Greed {
 
     /* @return a boolean that checks if there is a straight or not */
     public boolean straight() {
-        if (one == 1 && two == 1 && three == 1 && four == 1 && five == 1 && six == 1) {
-            return true;
+        int straight = 0;
+        for (int i: dieValues){
+            if(dieValues[i] == 1) straight++;
         }
-        return false;
+        if(straight < 6){
+            return false;
+        }else{
+            return  true;
+        }
 
     }
 
-    /* Checks the dicevalue after every throw and update the different integers,
+    /* Checks the dieval after every throw and update the different integers,
      * to se the amout of every number in one round.
      */
     public void updateScore() {
-        switch (dicevalue) {
-            case 1:
-                one++;
-                break;
-            case 2:
-                two++;
-                break;
-            case 3:
-                three++;
-                break;
-            case 4:
-                four++;
-                break;
-            case 5:
-                five++;
-                break;
-            case 6:
-                six++;
-                break;
-        }
+        dieValues[dieval-1]++;
+
     }
 
     /* Resets the value, when starting a new round */
     public void clearScore() {
-        one = 0;
-        two = 0;
-        three = 0;
-        four = 0;
-        five = 0;
-        six = 0;
+        for(int i = 0; i<6; i++)
+        dieValues[i] = 0;
+
     }
 
     /* Checks if the dices showing a straight, a three of a kind or/and if it exists any fives or ones,
@@ -149,7 +129,7 @@ public class Greed {
 
         } else if (!threeOfAKind().isEmpty()) {
             int x = threeOfAKind().get(0);
-            points = points + (one%3)*100 + (five%3)*50;
+            points = points + (dieValues[0]%3)*100 + (dieValues[4]%3)*50;
             if (threeOfAKind().size() > 1) {
                 int y = threeOfAKind().get(1);
                 if (x == 1) {
@@ -173,7 +153,7 @@ public class Greed {
 
         }
         else{
-            points = points + (one%3)*100 + (five%3)*50;
+            points = points + (dieValues[0]%3)*100 + (dieValues[4]%3)*50;
         }
         clearScore();
 
