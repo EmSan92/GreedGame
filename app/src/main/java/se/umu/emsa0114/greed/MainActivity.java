@@ -6,21 +6,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.emelie.greed.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 
 
 public class MainActivity extends ActionBarActivity {
 
-    private HashMap<Integer,ImageButton> dice;
-
+    private ArrayList<ImageView> dice;
+    private boolean[] marked;
 
     private ImageView die1;
     private ImageView die2;
@@ -34,7 +31,6 @@ public class MainActivity extends ActionBarActivity {
     private TextView score_points;
 
 
-
     private Button throwButton;
 
     private Button saveButton;
@@ -43,12 +39,13 @@ public class MainActivity extends ActionBarActivity {
 
     private Die die;
     private Greed greed;
+    private int k;
 
-    private  boolean hasIncreasedRound;
+    private boolean hasIncreasedRound;
     private int scoreCounter;
     private int round;
     private int totalScore;
-    private boolean isMarked1,isMarked2,isMarked3,isMarked4,isMarked5,isMarked6;
+
 
     public static ArrayList<Boolean> markedList;
 
@@ -57,179 +54,87 @@ public class MainActivity extends ActionBarActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dice = new ArrayList<ImageView>();
 
 
+        marked = new boolean[6];
+
+        k = 0;
         scoreCounter = 0;
         round = 0;
         totalScore = 0;
         die = new Die();
         greed = new Greed(die);
-        isMarked1 = false;
-        isMarked2 = false;
-        isMarked3 = false;
-        isMarked4 = false;
-        isMarked5 = false;
-        isMarked6 = false;
+
         hasIncreasedRound = false;
 
 
+        die1 = (ImageView) findViewById(R.id.die1);
+        die2 = (ImageView) findViewById(R.id.die2);
+        die3 = (ImageView) findViewById(R.id.die3);
+        die4 = (ImageView) findViewById(R.id.die4);
+        die5 = (ImageView) findViewById(R.id.die5);
+        die6 = (ImageView) findViewById(R.id.die6);
 
-        die1 = (ImageView)findViewById(R.id.dice1);
-        die2 = (ImageView)findViewById(R.id.dice2);
-        die3 = (ImageView)findViewById(R.id.dice3);
-        die4 = (ImageView)findViewById(R.id.dice4);
-        die5 = (ImageView)findViewById(R.id.dice5);
-        die6 = (ImageView)findViewById(R.id.dice6);
+        dice.add(die1);
+        dice.add(die2);
+        dice.add(die3);
+        dice.add(die4);
+        dice.add(die5);
+        dice.add(die6);
 
-        turn_score_points = (TextView)findViewById(R.id.turnscorepoints);
-        this_round = (TextView)findViewById(R.id.scorepointsofthisround);
-        score_points =(TextView)findViewById(R.id.scorepoints);
-
-
-
-
-        /*
-        *When an imageview is clicked on, the boolean is set to true and the imageview is set to be transparent.
-        * Click on a transparent imageview will set the boolean to false and the view to fully visiable.
-        */
-        die1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isMarked1) {
-                    die1.setAlpha(1f);
-                    isMarked1 = false;
-                } else {
-                    isMarked1 = true;
-                    die1.setAlpha(0.5f);
-                }
-
-            }
-        });
-        die2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isMarked2) {
-                    die2.setAlpha(1f);
-                    isMarked2 = false;
-
-                } else {
-                    isMarked2 = true;
-                    die2.setAlpha(0.5f);
-                }
-            }
-        });
-        die3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isMarked3) {
-                    die3.setAlpha(1f);
-                    isMarked3 = false;
-                } else {
-                    isMarked3 = true;
-                    die3.setAlpha(0.5f);
-                }
-            }
-        });
-        die4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isMarked4) {
-                    die4.setAlpha(1f);
-                    isMarked4 = false;
-                } else {
-                    isMarked4 = true;
-                    die4.setAlpha(0.5f);
-                }
-            }
-        });
-        die5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isMarked5) {
-                    die5.setAlpha(1f);
-                    isMarked5 = false;
-                } else {
-                    isMarked5 = true;
-                    die5.setAlpha(0.5f);
-                }
-            }
-        });
-        die6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isMarked6) {
-                    die6.setAlpha(1f);
-                    isMarked6 = false;
-                } else {
-                    isMarked6 = true;
-                    die6.setAlpha(0.5f);
-                }
-            }
-        });
+        turn_score_points = (TextView) findViewById(R.id.turnscorepoints);
+        this_round = (TextView) findViewById(R.id.scorepointsofthisround);
+        score_points = (TextView) findViewById(R.id.scorepoints);
 
 
 
-        throwButton = (Button)findViewById(R.id.throwButton);
+
+
+
+
+        throwButton = (Button) findViewById(R.id.throwButton);
         throwButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 /*Highlights the dices and the save button to indicate that they are clickable*/
                 saveButton.setEnabled(true);
-                if(!isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1){
-                    die1.setAlpha(1f);
-                    die2.setAlpha(1f);
-                    die3.setAlpha(1f);
-                    die4.setAlpha(1f);
-                    die5.setAlpha(1f);
-                    die6.setAlpha(1f);
+                if (!marked[0] && !marked[1] && !marked[2] && !marked[3] && !marked[4] && !marked[5]) {
+                    for (int c = 0; c < 6; c++) {
+                        dice.get(c).setAlpha(1f);
+                    }
                 }
 
                 greed.clearScore();
                /* Throw and update all imageviews(Dices) and update the score in the updateScore method */
-                if(!isMarked1){
-                die1.setImageResource(greed.getImageResource(1));
-                greed.updateScore();}
-                if(!isMarked2){
-                die2.setImageResource(greed.getImageResource(2));
-                greed.updateScore();}
-                if(!isMarked3){
-                die3.setImageResource(greed.getImageResource(3));
-                greed.updateScore();}
-                if(!isMarked4){
-                die4.setImageResource(greed.getImageResource(4));
-                greed.updateScore();}
-                if(!isMarked5){
-                die5.setImageResource(greed.getImageResource(5));
-                greed.updateScore();}
-                if(!isMarked6){
-                die6.setImageResource(greed.getImageResource(6));
-                greed.updateScore();}
+
+                for (int p = 0; p < 6; p++) {
+                    if (!marked[p]) {
+                        dice.get(p).setImageResource(greed.getImageResource(p + 1));
+                        greed.updateScore();
+                    }
+
+                }
 
                 int scoreOfRound = greed.getScore();
 
                 turn_score_points.setText(String.valueOf(scoreOfRound));
 
                 /*Makes the save button and the dices transparent and unclickable*/
-                if(scoreOfRound == 0 &&( !isMarked6 || !isMarked5 || !isMarked4 || !isMarked3 || !isMarked2 || !isMarked1)){
+                if (scoreOfRound == 0 && (!marked[0] || !marked[1] || !marked[2] || !marked[3] || !marked[4] || !marked[5])) {
                     scoreCounter = 0;
-                    if(!hasIncreasedRound){
+                    if (!hasIncreasedRound) {
                         round = round + 1;
                         hasIncreasedRound = false;
                     }
 
-                    isMarked1=false;
-                    isMarked2=false;
-                    isMarked3=false;
-                    isMarked4=false;
-                    isMarked5=false;
-                    isMarked6=false;
-                    die1.setAlpha(0.5f);
-                    die2.setAlpha(0.5f);
-                    die3.setAlpha(0.5f);
-                    die4.setAlpha(0.5f);
-                    die5.setAlpha(0.5f);
-                    die6.setAlpha(0.5f);
+                    for(int i=0;i<6;i++){
+                        marked[i] = false;
+                    }
+                    for (int a = 0; a < 6; a++) {
+                        dice.get(a).setAlpha(0.5f);
+                    }
                     saveButton.setEnabled(false);
 
                 }
@@ -237,9 +142,9 @@ public class MainActivity extends ActionBarActivity {
                 /*If no dices are marked and the score is not saved when clicking on the throw button,
                  *no points is saved and it counts as a round*/
 
-                if(scoreOfRound > 0 && (!isMarked6 && !isMarked5 && !isMarked4 && !isMarked3 && !isMarked2 && !isMarked1)){
+                if (scoreOfRound > 0 && (!marked[0] && !marked[1] && !marked[2] && !marked[3] && !marked[4] && !marked[5])) {
                     scoreCounter = 0;
-                    round ++;
+                    round++;
                     hasIncreasedRound = true;
 
 
@@ -249,16 +154,14 @@ public class MainActivity extends ActionBarActivity {
                 this_round.setText(String.valueOf(scoreCounter));
 
 
-
                 scoreOfRound = 0;
 
-                }
+            }
 
         });
 
 
-
-        saveButton = (Button)findViewById(R.id.saveButton);
+        saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -267,13 +170,13 @@ public class MainActivity extends ActionBarActivity {
                 turn_score_points.setText(String.valueOf(0));
                 this_round.setText(String.valueOf(0));
 
-                if(temp != scoreCounter && scoreCounter!=0) {
+                if (temp != scoreCounter && scoreCounter != 0) {
                     temp = scoreCounter;
                 }
                 totalScore = totalScore + scoreCounter;
                 score_points.setText(String.valueOf(totalScore));
-                if(totalScore > 10000){
-                    Intent iinent= new Intent(MainActivity.this,WinningActivity.class);
+                if (totalScore > 10000) {
+                    Intent iinent = new Intent(MainActivity.this, WinningActivity.class);
                     iinent.putExtra("Round", String.valueOf(round));
                     iinent.putExtra("Totalscore", String.valueOf(totalScore));
                     round = 0;
@@ -281,29 +184,84 @@ public class MainActivity extends ActionBarActivity {
                     finish();
                 }
                 scoreCounter = 0;
-                isMarked1=false;
-                isMarked2=false;
-                isMarked3=false;
-                isMarked4=false;
-                isMarked5=false;
-                isMarked6=false;
-                die1.setAlpha(0.5f);
-                die2.setAlpha(0.5f);
-                die3.setAlpha(0.5f);
-                die4.setAlpha(0.5f);
-                die5.setAlpha(0.5f);
-                die6.setAlpha(0.5f);
+
+                for(int i = 0 ; i<6;i++){
+                    marked[i] = false;
+                }
+
+                for (int b = 0; b < 6; b++) {
+                    dice.get(b).setAlpha(0.5f);
+                }
             }
         });
 
     }
 
 
-
-    public void onBackPressed(){
+    public void onBackPressed() {
         finish();
     }
 
+    public void setMarked(View view) {
+        switch (view.getId()) {
+            case R.id.die1:
+                if (marked[0]) {
+                    dice.get(0).setAlpha(1f);
+                    marked[0] = false;
+                } else {
+                    marked[0] = true;
+                    dice.get(0).setAlpha(0.5f);
+                }
+                break;
+            case R.id.die2:
+                if (marked[1]) {
+                    dice.get(1).setAlpha(1f);
+                    marked[1] = false;
+                } else {
+                    marked[1] = true;
+                    dice.get(1).setAlpha(0.5f);
+                }
+                break;
+            case R.id.die3:
+                if (marked[2]) {
+                    dice.get(2).setAlpha(1f);
+                    marked[2] = false;
+                } else {
+                    marked[2] = true;
+                    dice.get(2).setAlpha(0.5f);
+                }
+                break;
+            case R.id.die4:
+                if (marked[3]) {
+                    dice.get(3).setAlpha(1f);
+                    marked[3] = false;
+                } else {
+                    marked[3] = true;
+                    dice.get(3).setAlpha(0.5f);
+                }
+                break;
+            case R.id.die5:
+                if (marked[4]) {
+                    dice.get(4).setAlpha(1f);
+                    marked[4] = false;
+                } else {
+                    marked[4] = true;
+                    dice.get(4).setAlpha(0.5f);
+                }
+                break;
+            case R.id.die6:
+                if (marked[5]) {
+                    dice.get(5).setAlpha(1f);
+                    marked[5] = false;
+                } else {
+                    marked[5] = true;
+                    dice.get(5).setAlpha(0.5f);
+                }
+                break;
+        }
+
+
+    }
 
 }
 

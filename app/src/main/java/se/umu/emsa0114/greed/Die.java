@@ -7,7 +7,6 @@ import java.util.Random;
  * This class represent one dice.
  */
 public class Die {
-    private boolean isMarked;
     private int currentValue;
 
         // currentValue -> Image

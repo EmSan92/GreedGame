@@ -85,18 +85,20 @@
         android:paddingLeft="10dp">
 
         <ImageView
-            android:id="@+id/dice1"
+            android:id="@+id/die1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:src="@drawable/white1"
+            android:onClick="setMarked"
             android:alpha="0.5"
             />
         <ImageView
-            android:id="@+id/dice2"
+            android:id="@+id/die2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:onClick="setMarked"
             android:src="@drawable/white2"
             android:alpha="0.5"
             />
@@ -104,9 +106,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:onClick="setMarked"
             android:src="@drawable/white3"
             android:alpha="0.5"
-            android:id="@+id/dice3"/>
+            android:id="@+id/die3"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -118,23 +121,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:onClick="setMarked"
             android:src="@drawable/white4"
             android:alpha="0.5"
-            android:id="@+id/dice4"/>
+            android:id="@+id/die4"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="setMarked"
             android:padding="10dp"
             android:src="@drawable/white5"
             android:alpha="0.5"
-            android:id="@+id/dice5"/>
+            android:id="@+id/die5"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="setMarked"
             android:padding="10dp"
             android:src="@drawable/white6"
             android:alpha="0.5"
-            android:id="@+id/dice6"/>
+            android:id="@+id/die6"/>
     </LinearLayout>
 
 <LinearLayout

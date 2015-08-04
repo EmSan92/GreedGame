@@ -125,7 +125,7 @@ public class Greed {
     public int getScore() {
         points = 0;
         if (straight()) {
-            points = 1000;
+            points =  1000;
 
         } else if (!threeOfAKind().isEmpty()) {
             int x = threeOfAKind().get(0);
