@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Emelie on 2015-06-09.
- *
+ * <p/>
  * This class takes care of most logic of the game,
  * and have all the update methods for the different fields
  * that needs to update during the game.
@@ -17,16 +17,17 @@ public class Greed {
     private int dieval;
     private int[] dieValues;
     private int points;
+    private int givepoints;
 
 
-
-    public Greed(Die die)  {
+    public Greed(Die die) {
         diceList = new ArrayList<Integer>();
+        diceList.add(0, 0);
         this.die = die;
         dieval = 0;
         points = 0;
         dieValues = new int[6];
-
+        givepoints = 0;
     }
 
     /*
@@ -35,13 +36,12 @@ public class Greed {
     * @returns the newly thrown dice image
     */
     public int getImageResource(int dieNumber) {
-        diceList.add(0, 0);
+
         int updateIm = updateImage();
         dieval = die.getCurrentValue();
         diceList.add(dieNumber, dieval);
         return updateIm;
     }
-
 
 
     /*
@@ -80,9 +80,12 @@ public class Greed {
     /* @return a list that contains one or two three of a kind */
     public ArrayList<Integer> threeOfAKind() {
         ArrayList<Integer> templist = new ArrayList<Integer>();
-            for(int k = 0; k<6; k++ ){
-                if (dieValues[k] >= 3) templist.add(k+1);
+        for (int k = 0; k < 6; k++) {
+            if (dieValues[k] >= 3) {
+                templist.add(k + 1);
+                givepoints = k + 1;
             }
+        }
 
         return templist;
     }
@@ -91,13 +94,14 @@ public class Greed {
     /* @return a boolean that checks if there is a straight or not */
     public boolean straight() {
         int straight = 0;
-        for (int i: dieValues){
-            if(dieValues[i] == 1) straight++;
+        for (int i = 0; i < 6; i++) {
+            if (dieValues[i] == 1) straight++;
         }
-        if(straight < 6){
+        if (straight < 6) {
             return false;
-        }else{
-            return  true;
+        } else {
+            givepoints = 7;
+            return true;
         }
 
     }
@@ -106,14 +110,14 @@ public class Greed {
      * to se the amout of every number in one round.
      */
     public void updateScore() {
-        dieValues[dieval-1]++;
+        dieValues[dieval - 1]++;
 
     }
 
     /* Resets the value, when starting a new round */
     public void clearScore() {
-        for(int i = 0; i<6; i++)
-        dieValues[i] = 0;
+        for (int i = 0; i < 6; i++)
+            dieValues[i] = 0;
 
     }
 
@@ -125,35 +129,34 @@ public class Greed {
     public int getScore() {
         points = 0;
         if (straight()) {
-            points =  1000;
+            points = points + 1000;
 
         } else if (!threeOfAKind().isEmpty()) {
             int x = threeOfAKind().get(0);
-            points = points + (dieValues[0]%3)*100 + (dieValues[4]%3)*50;
+            points = points + (dieValues[0] % 3) * 100 + (dieValues[4] % 3) * 50;
             if (threeOfAKind().size() > 1) {
                 int y = threeOfAKind().get(1);
                 if (x == 1) {
                     points = points + 1000 + y * 100;
                 } else if (y == 1) {
                     points = points + 1000 + x * 100;
-                }else if(x ==1 && y==1){
+                } else if (x == 1 && y == 1) {
                     points = points + 2000;
                 } else {
                     points = points + x * 100 + y * 100;
                 }
 
-            }else{
+            } else {
                 if (x == 1) {
                     points = points + 1000;
-                }else{
-                    points = points + x*100;
+                } else {
+                    points = points + x * 100;
                 }
             }
 
 
-        }
-        else{
-            points = points + (dieValues[0]%3)*100 + (dieValues[4]%3)*50;
+        } else {
+            points = points + (dieValues[0] % 3) * 100 + (dieValues[4] % 3) * 50;
         }
         clearScore();
 
@@ -163,8 +166,28 @@ public class Greed {
     /*
     * @return list of dice values
     * */
-    public ArrayList<Integer> getDiceList(){
-    return diceList;
+    public ArrayList<Integer> getDiceList() {
+        return diceList;
+    }
+
+
+    public boolean givePoints(int valOfDie) {
+        int dieVal = diceList.get(valOfDie);
+        if (dieVal == 1 || dieVal == 5) {
+            return true;
+        } else if (dieVal == givepoints) {
+            System.out.println("triss");
+            return true;
+
+        } else if (7 == givepoints) {
+            System.out.println("straight");
+            return true;
+
+        } else {
+            System.out.println("false");
+            return false;
+        }
+
     }
 
 }

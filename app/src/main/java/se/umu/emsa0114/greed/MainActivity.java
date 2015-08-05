@@ -88,11 +88,6 @@ public class MainActivity extends ActionBarActivity {
         score_points = (TextView) findViewById(R.id.scorepoints);
 
 
-
-
-
-
-
         throwButton = (Button) findViewById(R.id.throwButton);
         throwButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,55 +101,81 @@ public class MainActivity extends ActionBarActivity {
                     }
                 }
 
-                greed.clearScore();
+
                /* Throw and update all imageviews(Dices) and update the score in the updateScore method */
 
-                for (int p = 0; p < 6; p++) {
-                    if (!marked[p]) {
-                        dice.get(p).setImageResource(greed.getImageResource(p + 1));
+                for (int i = 0; i < 6; i++) {
+                    if (!marked[i] || (marked[0] && marked[1] && marked[2] && marked[3] && marked[4] && marked[5]) ) {
+                        dice.get(i).setImageResource(greed.getImageResource(i));
                         greed.updateScore();
+
+
                     }
+                }
+                /**
+                 * slå alla tärningar.
+                 * räkna poäng för nya tärningar.
+                 * kolla om alla är markerade och poäng ska ges.
+                 *
+                 * kolla om alla är markerade och om poäng ej ska ges.
+                 * isf öka rounds och nollställ variabler
+                 *
+                 * kolla om några är markerade och scoreOfRounds för nya
+                 */
+
+                int scoreOfRound = greed.getScore();
+                if(scoreOfRound >0 && (marked[0] && marked[1] && marked[2] && marked[3] && marked[4] && marked[5])){
+                    for (int c = 0; c < 6; c++) {
+                        marked[c] = false;
+                        dice.get(c).setAlpha(1f);
+                    }
+                    scoreCounter = scoreCounter + scoreOfRound;
+                }else if(scoreOfRound <= 0 && (marked[0] && marked[1] && marked[2] && marked[3] && marked[4] && marked[5])){
+                    scoreCounter = 0;
+                    scoreOfRound = 0;
+                    round = round + 1;
 
                 }
 
-                int scoreOfRound = greed.getScore();
 
-                turn_score_points.setText(String.valueOf(scoreOfRound));
 
                 /*Makes the save button and the dices transparent and unclickable*/
-                if (scoreOfRound == 0 && (!marked[0] || !marked[1] || !marked[2] || !marked[3] || !marked[4] || !marked[5])) {
+                else if (scoreOfRound == 0 && (!marked[0] || !marked[1] || !marked[2] || !marked[3] || !marked[4] || !marked[5])) {
                     scoreCounter = 0;
                     if (!hasIncreasedRound) {
                         round = round + 1;
                         hasIncreasedRound = false;
                     }
 
-                    for(int i=0;i<6;i++){
+                    for (int i = 0; i < 6; i++) {
                         marked[i] = false;
+                        dice.get(i).setAlpha(0.5f);
                     }
-                    for (int a = 0; a < 6; a++) {
-                        dice.get(a).setAlpha(0.5f);
-                    }
+
                     saveButton.setEnabled(false);
 
                 }
 
+
                 /*If no dices are marked and the score is not saved when clicking on the throw button,
                  *no points is saved and it counts as a round*/
 
-                if (scoreOfRound > 0 && (!marked[0] && !marked[1] && !marked[2] && !marked[3] && !marked[4] && !marked[5])) {
-                    scoreCounter = 0;
+                else if(scoreOfRound > 0 && (!marked[0] && !marked[1] && !marked[2] && !marked[3] && !marked[4] && !marked[5])) {
+                    scoreCounter = scoreOfRound;
                     round++;
                     hasIncreasedRound = true;
 
 
                 }
-                scoreCounter = scoreCounter + scoreOfRound;
-
+                else if(scoreOfRound > 0 && (marked[0] || marked[1] || marked[2] || marked[3] || marked[4] || marked[5])){
+                    scoreCounter += scoreOfRound;
+                }
+                //scoreCounter = scoreCounter + scoreOfRound;
+                turn_score_points.setText(String.valueOf(scoreOfRound));
                 this_round.setText(String.valueOf(scoreCounter));
 
 
-                scoreOfRound = 0;
+
 
             }
 
@@ -185,7 +206,7 @@ public class MainActivity extends ActionBarActivity {
                 }
                 scoreCounter = 0;
 
-                for(int i = 0 ; i<6;i++){
+                for (int i = 0; i < 6; i++) {
                     marked[i] = false;
                 }
 
@@ -205,57 +226,63 @@ public class MainActivity extends ActionBarActivity {
     public void setMarked(View view) {
         switch (view.getId()) {
             case R.id.die1:
-                if (marked[0]) {
-                    dice.get(0).setAlpha(1f);
-                    marked[0] = false;
-                } else {
+                if (!marked[0] && greed.givePoints(0)) {
                     marked[0] = true;
                     dice.get(0).setAlpha(0.5f);
+                } else {
+                    dice.get(0).setAlpha(1f);
+                    marked[0] = false;
+
                 }
                 break;
             case R.id.die2:
-                if (marked[1]) {
-                    dice.get(1).setAlpha(1f);
-                    marked[1] = false;
-                } else {
+                if (!marked[1] && greed.givePoints(1)) {
                     marked[1] = true;
                     dice.get(1).setAlpha(0.5f);
+                } else {
+                    dice.get(1).setAlpha(1f);
+                    marked[1] = false;
+
                 }
                 break;
             case R.id.die3:
-                if (marked[2]) {
-                    dice.get(2).setAlpha(1f);
-                    marked[2] = false;
-                } else {
+                if (!marked[2]&& greed.givePoints(2)) {
                     marked[2] = true;
                     dice.get(2).setAlpha(0.5f);
+                } else {
+                    dice.get(2).setAlpha(1f);
+                    marked[2] = false;
+
                 }
                 break;
             case R.id.die4:
-                if (marked[3]) {
-                    dice.get(3).setAlpha(1f);
-                    marked[3] = false;
-                } else {
+                if (!marked[3]&& greed.givePoints(3)) {
                     marked[3] = true;
                     dice.get(3).setAlpha(0.5f);
+                } else {
+                    dice.get(3).setAlpha(1f);
+                    marked[3] = false;
+
                 }
                 break;
             case R.id.die5:
-                if (marked[4]) {
-                    dice.get(4).setAlpha(1f);
-                    marked[4] = false;
-                } else {
+                if (!marked[4]&& greed.givePoints(4)) {
                     marked[4] = true;
                     dice.get(4).setAlpha(0.5f);
+                } else {
+                    dice.get(4).setAlpha(1f);
+                    marked[4] = false;
+
                 }
                 break;
             case R.id.die6:
-                if (marked[5]) {
-                    dice.get(5).setAlpha(1f);
-                    marked[5] = false;
-                } else {
+                if (!marked[5] && greed.givePoints(5)) {
                     marked[5] = true;
                     dice.get(5).setAlpha(0.5f);
+                } else {
+                    dice.get(5).setAlpha(1f);
+                    marked[5] = false;
+
                 }
                 break;
         }
